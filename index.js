@@ -30,6 +30,6 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
 
-controller.hears(['ramukaka', 'ramu', 'kakaramu', 'ramu kaka', 'ramu ji', 'kaka'], [/*'ambient',*/ 'direct_message','direct_mention','mention'], function (bot, message) {
+controller.hears(['ramukaka', 'ramu', 'kakaramu', 'ramu kaka', 'ramu ji', 'kaka'], ['ambient', 'direct_message','direct_mention','mention'], function (bot, message) {
   bot.reply(message, 'Did you mention my name?')
 })
