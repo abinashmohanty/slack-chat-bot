@@ -25,10 +25,20 @@ if (token) {
   console.log('Starting in Beep Boop multi-team mode')
   require('beepboop-botkit').start(controller, { debug: true })
 }
+
+
 // the bellow is slack specific handle
 controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
+
+
+// the bellow is slack specific handle
+controller.hears('message_received', function(bot, message) {
+  bot.reply(message, "I'd like to help you, but please try to say something more specific like `ux invite` or `ux design` etc.")
+})
+
+
 
 controller.hears(['ramukaka', 'ramu', 'kakaramu', 'ramu kaka', 'ramu ji', 'kaka'], ['ambient', 'direct_message','direct_mention','mention'], function (bot, message) {
   bot.reply(message, 'Did you mention my name?')
@@ -39,44 +49,97 @@ controller.hears(['ramukaka', 'ramu', 'kakaramu', 'ramu kaka', 'ramu ji', 'kaka'
 // the following script hears for
 // "gsiuxd invite" or "ux group invite"
 
-controller.hears(['get gsiuxd invite', 'slack invite', 'ux slack invite', 'group invite'], ['ambient', 'direct_message','direct_mention','mention'], function (bot, message) {
+controller.hears(['get gsiuxd invite', 'gsiuxd invite','slack invite', 'ux slack invite', 'group invite'], ['ambient', 'direct_message','direct_mention','mention'], function (bot, message) {
 
 
-bot.startTyping(message, function () {
-  // do something here, the "is typing" animation is visible
-})
-
-
-bot.replyWithTyping(message, 'Here is the slack invite link to join in less than 30 secs http://www.gsiuxd.co/join-ux-slack-community-india/')
+bot.reply(message, 'Here is the slack invite link to join in less than 30 secs http://www.gsiuxd.co/join-ux-slack-community-india/')
 });
 
 
-// 1. About Ramu kaka
+// Reply my my short bio
 
-controller.hears(['whats your name?', 'what is your name', 'your name', 'your real name'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+controller.hears(["what's your name?", 'what is your name', 'your name', 'your real name'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
-bot.startTyping(message, function () {
-  // do something here, the "is typing" animation is visible
-})
-
-
-  bot.replyWithTyping(message, 'Hello! My name is Ramu, but you can call me kaka, ramu or even ramu kaka.')
+bot.reply(message, 'Hello! My name is Ramu, but you can call me kaka, ramu or even ramu kaka.')
 });
 
 
-// 2. That's cool Ramu kaka
 
-controller.hears(['thats cool', 'cool', 'awesome', 'great'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+// Reply Yep! when hear cool, awesome, etc.
 
-bot.startTyping(message, function () {
-  // do something here, the "is typing" animation is visible
-})
+controller.hears(["that's cool", 'nice', 'cool', 'awesome', 'great'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
-
-  bot.replyWithTyping(message, 'Yep, I will see you afterwards!')
+bot.reply(message, 'Yep!')
 });
 
-// 3. send random greeting messages
+
+// Reply whre did you born?
+
+controller.hears(["who made you?", 'who built you?'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+
+bot.reply(message, 'I was designed and tested by my master')
+});
+
+
+// Reply are you from india?
+
+controller.hears(["are you from india?"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+
+bot.reply(message, "Yes!")
+});
+
+
+// Reply who is your master?
+
+controller.hears(["who is your master?", "Who's your master?"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+
+bot.reply(message, "It's confidential!");
+});
+
+
+
+// Reply Welcome, Don't mention, etc when hear thank you, etc.
+
+controller.hears(['Thanks','thx','thank u','thank you','thanks a lot', 'thanks man', 'thank you so much'], ['direct_message','direct_mention','mention'], function(bot, message) {
+    var message_options = [
+    	"You got it",
+    	"Don’t mention it",
+      "Not a problem",
+      "No worries",
+      "My pleasure",
+      "I’m happy to help",
+    	"Anytime"
+	]
+	var random_index = Math.floor(Math.random() * message_options.length)
+	var chosen_message = message_options[random_index]
+
+  bot.reply(message, chosen_message)
+    // do something here, the "is typing" animation is visible
+
+});
+
+
+// Reply to continuing message
+
+controller.hears(['Okay','hmm','hm.','hm..','i see', 'alright', 'ok','yes'], ['direct_message','direct_mention','mention'], function(bot, message) {
+    var message_options = [
+    	"Yep",
+    	"Yeah",
+      "yep",
+      "cool then",
+      "what else?",
+	]
+	var random_index = Math.floor(Math.random() * message_options.length)
+	var chosen_message = message_options[random_index]
+
+  bot.reply(message, chosen_message)
+    // do something here, the "is typing" animation is visible
+
+});
+
+
+
+// Reply random greeting messages
 
 controller.hears(['hello','hey','hi','aloha'], ['direct_message','direct_mention','mention'], function(bot, message) {
     var message_options = [
@@ -91,18 +154,14 @@ controller.hears(['hello','hey','hi','aloha'], ['direct_message','direct_mention
 	var random_index = Math.floor(Math.random() * message_options.length)
 	var chosen_message = message_options[random_index]
 
-  bot.startTyping(message, function () {
+  bot.reply(message, chosen_message)
     // do something here, the "is typing" animation is visible
-
-  })
-
-
-	bot.replyWithTyping(message, chosen_message)
 
 });
 
 
-// 5. remember and call out the user name
+
+// remember and call out the user name
 
 controller.hears(['call me (.*)', 'my name is (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
@@ -114,7 +173,104 @@ controller.hears(['call me (.*)', 'my name is (.*)'], 'direct_message,direct_men
         }
         user.name = name;
         controller.storage.users.save(user, function(err, id) {
-            bot.replyWithTyping(message, 'Got it. I will call you ' + user.name + ' from now on.');
+            bot.reply(message, 'Got it. I will call you ' + user.name + ' from now on.');
         });
     });
 });
+
+
+// Reply a link with hyperlinked text
+
+controller.hears(["community website", "our website link"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+
+      bot.reply(message,{
+        text: "Here is the link to <http://www.gsiuxd.co|GSIUXD Website>",
+        icon_emoji: ":man_with_turban:", // added bot existing icon to work
+      });
+
+});
+
+
+// Reply using attachment basic - understand how it stores information and data
+
+controller.hears(["play games"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+
+  var reply_with_attachments = {
+
+    "text": "Would you like to play a game?",
+    "attachments": [
+        {
+            "text": "Choose a game to play",
+            "fallback": "You are unable to choose a game",
+            "callback_id": "wopr_game",
+            "color": "#3AA3E3",
+            "attachment_type": "default",
+            "actions": [
+                {
+                    "name": "chess",
+                    "text": "Chess",
+                    "type": "button",
+                    "value": "chess"
+                },
+                {
+                    "name": "maze",
+                    "text": "Falken's Maze",
+                    "type": "button",
+                    "value": "maze"
+                },
+                {
+                    "name": "war",
+                    "text": "Thermonuclear War",
+                    "style": "danger",
+                    "type": "button",
+                    "value": "war",
+                    "confirm": {
+                        "title": "Are you sure?",
+                        "text": "Wouldn't you prefer a good game of chess?",
+                        "ok_text": "Yes",
+                        "dismiss_text": "No"
+                    }
+                }
+            ]
+        }
+    ]
+}
+bot.reply(message, reply_with_attachments);
+});
+
+
+// Reply to users why bot doesn't understand the given text
+
+controller.hears(".*", ["direct_message", "direct_mention"], function (bot, message) {
+
+  var message_options = [
+    "Sorry! I don't understand this. Could you be more specific?",
+    "Ah! I can only help you with specific topics such as `Slack Invite`, `GSIUXD`, or `Learn UX`",
+    "I'm not that smart enough to understand, yet!",
+    "Could you be more specific?"
+  ]
+  var random_index = Math.floor(Math.random() * message_options.length)
+  var chosen_message = message_options[random_index]
+
+    bot.reply(message, chosen_message)
+});
+
+/*
+controller.on(['direct_message','direct_mention','mention'], function(bot, message) {
+
+var message_options = [
+  "Come again...",
+  "Sorry! I din't catch that.",
+  "Sorry! I don't understand this. Could you be more specific?",
+  "Hi! How can I help?",
+  "Ah! I can only help you with specific topics such as `Slack Invite`, `GSIUXD`, or `Learn UX`",
+  "I'm not that smart enough to understand, yet!",
+  "Could you be more specific?"
+]
+var random_index = Math.floor(Math.random() * message_options.length)
+var chosen_message = message_options[random_index]
+
+bot.reply(message, chosen_message)
+
+});
+*/
