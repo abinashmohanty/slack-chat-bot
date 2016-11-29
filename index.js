@@ -93,7 +93,17 @@ bot.reply(message, "Yes!")
 
 controller.hears(["who is your master?", "Who's your master?"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
-bot.reply(message, "It's confidential!");
+bot.reply(message, "It's confidential!:blush:");
+});
+
+
+// Let me introduce ramu kaka
+
+controller.hears(["me introduce"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+
+
+
+bot.reply(message, "Thank you :thumbsup:");
 });
 
 
@@ -124,8 +134,8 @@ controller.hears(['Thanks','thx','thank u','thank you','thanks a lot', 'thanks m
 controller.hears(['Okay','hmm','hm.','hm..','i see', 'alright', 'ok','yes'], ['direct_message','direct_mention','mention'], function(bot, message) {
     var message_options = [
     	"Yep",
-    	"Yeah",
-      "yep",
+    	"Okay",
+      "hmm",
       "cool then",
       "what else?",
 	]
@@ -137,6 +147,26 @@ controller.hears(['Okay','hmm','hm.','hm..','i see', 'alright', 'ok','yes'], ['d
 
 });
 
+
+// Replies to lol, haha, funny, etc.
+
+controller.hears(['LOL','lmao','LMAO','omg','LOL','lolz','lol.','ha','haha','HAHA','hahahahahaha','bahahaahah','ha.','hehe'], ['direct_message','direct_mention','mention'], function(bot, message) {
+    var message_options = [
+    	"I'm still learning emotions :thought_balloon:",
+    	"What's this? :thought_balloon:",
+      "Still need to understand emotions :thought_balloon:",
+      "Let me think :thought_balloon:",
+      "Should I laugh :thought_balloon:",
+      "What does it mean :thought_balloon:",
+    	"Hmmmmm.... :thought_balloon:"
+	]
+	var random_index = Math.floor(Math.random() * message_options.length)
+	var chosen_message = message_options[random_index]
+
+  bot.reply(message, chosen_message)
+    // do something here, the "is typing" animation is visible
+
+});
 
 
 // Reply random greeting messages
@@ -190,7 +220,7 @@ controller.hears(["community website", "our website link"], [ 'direct_message','
 
 });
 
-
+// This is a demo Update the following later on...
 // Reply using attachment basic - understand how it stores information and data
 
 controller.hears(["play games"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
@@ -237,9 +267,65 @@ controller.hears(["play games"], [ 'direct_message','direct_mention','mention'],
 }
 bot.reply(message, reply_with_attachments);
 });
+// demo ends...
+
+
+// Conversation - intro
+
+controller.hears(['How are you?'], 'direct_message, direct_mention, mention', function(bot,message) {
+
+  // start a conversation to handle this response.
+  bot.startConversation(message,function(err,convo) {
+
+    /*convo.say('Hello there!'); */
+    convo.say("I'm doing good. :simple_smile: Thanks!");
+
+  });
+});
+
+// Conversation -
+/*  Hear some keywords as questions
+    bot asks, what is it?
+    user replies with text as a question
+    bot says the text as a question
+*/
+
+controller.hears(['I have a question','tell me something', 'ask a question'], 'direct_message, direct_mention, mention', function(bot,message) {
+
+  // start a conversation to handle this response.
+  bot.startConversation(message,function(err,convo) {
+
+    convo.ask('Yes! What is it?',function(response,convo) {
+
+      convo.say('Cool, you said: ' + response.text);
+      convo.next();
+
+    });
+
+  })
+
+});
+
+
+
+
+
+
+
+// Example of message.match using "user experience" witout "engineer"
+
+controller.hears('user experience (.*)',["direct_message", "direct_mention"],function(bot,message) {
+  var uxType = message.match[1]; //match[1] is the (.*) group. match[0] is the entire group (user experience (.*)).
+  if (uxType === 'engineer') {
+    return bot.reply(message, 'I\'m afraid I can\'t say more things on UX engineer at this time.');
+  }
+  return bot.reply(message, 'Say more...');
+});
 
 
 // Reply to users why bot doesn't understand the given text
+
+
 
 controller.hears(".*", ["direct_message", "direct_mention"], function (bot, message) {
 
