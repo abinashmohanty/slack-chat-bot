@@ -32,6 +32,53 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
 
+/*
+// the bellow is slack specific handle
+controller.hears(['Ask me'], 'message_received','direct_message','direct_mention','mention', function(bot,message) {
+
+  // start a conversation to handle this response.
+  bot.startConversation(message,function(err,convo) {
+
+    convo.ask('Are you a designer? Say `YES`, `NO` or `DONE` to quit.',[
+      {
+        pattern: 'done',
+        callback: function(response,convo) {
+          convo.say('OK you are done!');
+          convo.next();
+        }
+      },
+      {
+        pattern: bot.utterances.yes,
+        callback: function(response,convo) {
+          convo.say('Great! I will continue...');
+          // do something else...
+          convo.next();
+
+        }
+      },
+      {
+        pattern: bot.utterances.no,
+        callback: function(response,convo) {
+          convo.say('Perhaps later.');
+          // do something else...
+          convo.next();
+        }
+      },
+      {
+        default: true,
+        callback: function(response,convo) {
+          // just repeat the question
+          convo.repeat();
+          convo.next();
+        }
+      }
+    ]);
+
+  })
+
+});
+
+*/
 
 // the bellow is slack specific handle
 controller.hears('message_received', function(bot, message) {
@@ -52,7 +99,7 @@ controller.hears(['ramukaka', 'ramu', 'kakaramu', 'ramu kaka', 'ramu ji', 'kaka'
 controller.hears(['get gsiuxd invite', 'gsiuxd invite','slack invite', 'ux slack invite', 'group invite'], ['ambient', 'direct_message','direct_mention','mention'], function (bot, message) {
 
 
-bot.reply(message, 'Here is the slack invite link to join in less than 30 secs http://www.gsiuxd.co/join-ux-slack-community-india/')
+bot.reply(message, 'Here is the slack invite link to join in less than 30 secs <http://www.gsiuxd.co/join-ux-slack-community-india/|GSIUXD Invite>')
 });
 
 
@@ -60,7 +107,7 @@ bot.reply(message, 'Here is the slack invite link to join in less than 30 secs h
 
 controller.hears(["what's your name?", 'what is your name', 'your name', 'your real name'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
-bot.reply(message, 'Hello! My name is Ramu, but you can call me kaka, ramu or even ramu kaka.')
+bot.reply(message, 'My name is Ramu kaka.\n You can also call me kaka, ramu\n or just say `Help Needed`.')
 });
 
 
@@ -214,60 +261,13 @@ controller.hears(['call me (.*)', 'my name is (.*)'], 'direct_message,direct_men
 controller.hears(["community website", "our website link"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
       bot.reply(message,{
-        text: "Here is the link to <http://www.gsiuxd.co|GSIUXD Website>",
+        text: "Here is the link to *<http://www.gsiuxd.co|GSIUXD Website>*",
+        /*username: "@ramukaka",*/
         icon_emoji: ":man_with_turban:", // added bot existing icon to work
       });
 
 });
 
-// This is a demo Update the following later on...
-// Reply using attachment basic - understand how it stores information and data
-
-controller.hears(["play games"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
-
-  var reply_with_attachments = {
-
-    "text": "Would you like to play a game?",
-    "attachments": [
-        {
-            "text": "Choose a game to play",
-            "fallback": "You are unable to choose a game",
-            "callback_id": "wopr_game",
-            "color": "#3AA3E3",
-            "attachment_type": "default",
-            "actions": [
-                {
-                    "name": "chess",
-                    "text": "Chess",
-                    "type": "button",
-                    "value": "chess"
-                },
-                {
-                    "name": "maze",
-                    "text": "Falken's Maze",
-                    "type": "button",
-                    "value": "maze"
-                },
-                {
-                    "name": "war",
-                    "text": "Thermonuclear War",
-                    "style": "danger",
-                    "type": "button",
-                    "value": "war",
-                    "confirm": {
-                        "title": "Are you sure?",
-                        "text": "Wouldn't you prefer a good game of chess?",
-                        "ok_text": "Yes",
-                        "dismiss_text": "No"
-                    }
-                }
-            ]
-        }
-    ]
-}
-bot.reply(message, reply_with_attachments);
-});
-// demo ends...
 
 
 // Conversation - intro
@@ -305,7 +305,6 @@ controller.hears(['I have a question','tell me something', 'ask a question'], 'd
   })
 
 });
-
 
 
 
