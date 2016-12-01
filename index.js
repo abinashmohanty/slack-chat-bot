@@ -1,30 +1,83 @@
-var Botkit = require('botkit')
+/*-+-+-+-+-+ +-+-+-+
+|R|a|m|u| |K|a|k|a|
++-+-+-+ +-+-+-+-+-*/
 
-var token = process.env.SLACK_TOKEN
+if (!process.env.token) {
+    console.log('Error: Specify token in environment');
+    process.exit(1);
+}
+
+var Botkit = require('./lib/Botkit.js');
+var os = require('os');
 
 var controller = Botkit.slackbot({
-  // reconnect to Slack RTM when connection goes bad
-  retry: Infinity,
-  debug: false
-})
+    debug: false,
+});
 
-// Assume single team mode if we have a SLACK_TOKEN
-if (token) {
-  console.log('Starting in single-team mode')
-  controller.spawn({
-    token: token
-  }).startRTM(function (err, bot, payload) {
-    if (err) {
-      throw new Error(err)
-    }
+var bot = controller.spawn({
+    token: process.env.token
+}).startRTM();
 
-    console.log('Connected to Slack RTM')
-  })
-// Otherwise assume multi-team mode - setup beep boop resourcer connection
-} else {
-  console.log('Starting in Beep Boop multi-team mode')
-  require('beepboop-botkit').start(controller, { debug: true })
-}
+/*~~~~~~~~~~~
+Bot Functions
+Starts Here
+~~~~~~~~~~~~*/
+
+// Bot starts a conversation before listen to any keyword
+
+bot.say({
+      text: "Welcome to our test zone!",
+      channel: 'G38RUGE4D' // channel Id for #slack_integration
+  });
+
+
+
+
+// Replies to Hello
+
+controller.hears(['hello'], 'direct_message,direct_mention,mention', function(bot, message) {
+
+    bot.api.reactions.add({
+        timestamp: message.ts,
+        channel: message.channel,
+        name: 'thumbsup',
+    }, function(err, res) {
+        if (err) {
+            bot.botkit.log('Failed to add emoji reaction :(', err);
+        }
+    });
+
+
+    controller.storage.users.get(message.user, function(err, user) {
+        if (user && user.name) {
+            bot.reply(message, 'Hello ' + user.name + '!!');
+        } else {
+            bot.reply(message, 'Hello.');
+        }
+    });
+});
+
+
+// Replies random greeting messages
+
+
+controller.hears(['hi','aloha'], 'direct_message', function(bot, message) {
+    var message_options = [
+    	"Hello there!",
+    	"Hello.",
+      "Yes, I'm listening...",
+      "Hi! How can I help?",
+      "Hey, what's up!",
+      "Yes, tell me! What are you looking for?",
+    	"What's up?"
+	]
+	var random_index = Math.floor(Math.random() * message_options.length)
+	var chosen_message = message_options[random_index]
+
+  bot.reply(message, chosen_message)
+    // do something here, the "is typing" animation is visible
+
+});
 
 
 // the bellow is slack specific handle
@@ -32,58 +85,7 @@ controller.on('bot_channel_join', function (bot, message) {
   bot.reply(message, "I'm here!")
 })
 
-/*
-// the bellow is slack specific handle
-controller.hears(['Ask me'], 'message_received','direct_message','direct_mention','mention', function(bot,message) {
 
-  // start a conversation to handle this response.
-  bot.startConversation(message,function(err,convo) {
-
-    convo.ask('Are you a designer? Say `YES`, `NO` or `DONE` to quit.',[
-      {
-        pattern: 'done',
-        callback: function(response,convo) {
-          convo.say('OK you are done!');
-          convo.next();
-        }
-      },
-      {
-        pattern: bot.utterances.yes,
-        callback: function(response,convo) {
-          convo.say('Great! I will continue...');
-          // do something else...
-          convo.next();
-
-        }
-      },
-      {
-        pattern: bot.utterances.no,
-        callback: function(response,convo) {
-          convo.say('Perhaps later.');
-          // do something else...
-          convo.next();
-        }
-      },
-      {
-        default: true,
-        callback: function(response,convo) {
-          // just repeat the question
-          convo.repeat();
-          convo.next();
-        }
-      }
-    ]);
-
-  })
-
-});
-
-*/
-
-// the bellow is slack specific handle
-controller.hears('message_received', function(bot, message) {
-  bot.reply(message, "I'd like to help you, but please try to say something more specific like `ux invite` or `ux design` etc.")
-})
 
 
 
@@ -99,11 +101,11 @@ controller.hears(['ramukaka', 'ramu', 'kakaramu', 'ramu kaka', 'ramu ji', 'kaka'
 controller.hears(['get gsiuxd invite', 'gsiuxd invite','slack invite', 'ux slack invite', 'group invite'], ['ambient', 'direct_message','direct_mention','mention'], function (bot, message) {
 
 
-bot.reply(message, 'Here is the slack invite link to join in less than 30 secs <http://www.gsiuxd.co/join-ux-slack-community-india/|GSIUXD Invite>')
+bot.reply(message, 'Here is the slack invite link to join in less than 30 secs *<http://www.gsiuxd.co/join-ux-slack-community-india/|GSIUXD Invite>*')
 });
 
 
-// Reply my my short bio
+// Replies my my short bio
 
 controller.hears(["what's your name?", 'what is your name', 'your name', 'your real name'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
@@ -112,15 +114,15 @@ bot.reply(message, 'My name is Ramu kaka.\n You can also call me kaka, ramu\n or
 
 
 
-// Reply Yep! when hear cool, awesome, etc.
+// Replies Yep! when hear cool, awesome, etc.
 
-controller.hears(["that's cool", 'nice', 'cool', 'awesome', 'great'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
+controller.hears(["that's cool", 'nice', 'hmm', 'awesome', 'great'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
 bot.reply(message, 'Yep!')
 });
 
 
-// Reply whre did you born?
+// Replies whre did you born?
 
 controller.hears(["who made you?", 'who built you?'], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
@@ -128,7 +130,7 @@ bot.reply(message, 'I was designed and tested by my master')
 });
 
 
-// Reply are you from india?
+// Replies are you from india?
 
 controller.hears(["are you from india?"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
@@ -136,7 +138,7 @@ bot.reply(message, "Yes!")
 });
 
 
-// Reply who is your master?
+// Replies who is your master?
 
 controller.hears(["who is your master?", "Who's your master?"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
@@ -155,7 +157,7 @@ bot.reply(message, "Thank you :thumbsup:");
 
 
 
-// Reply Welcome, Don't mention, etc when hear thank you, etc.
+// Replies Welcome, Don't mention, etc when hear thank you, etc.
 
 controller.hears(['Thanks','thx','thank u','thank you','thanks a lot', 'thanks man', 'thank you so much'], ['direct_message','direct_mention','mention'], function(bot, message) {
     var message_options = [
@@ -176,23 +178,66 @@ controller.hears(['Thanks','thx','thank u','thank you','thanks a lot', 'thanks m
 });
 
 
-// Reply to continuing message
+// Replies to thank you related messages
 
-controller.hears(['Okay','hmm','hm.','hm..','i see', 'alright', 'ok','yes'], ['direct_message','direct_mention','mention'], function(bot, message) {
-    var message_options = [
-    	"Yep",
-    	"Okay",
-      "hmm",
-      "cool then",
-      "what else?",
-	]
-	var random_index = Math.floor(Math.random() * message_options.length)
-	var chosen_message = message_options[random_index]
+controller.hears(['Okay','cool','wow','superb', 'excellent','hm.','hm..','i see', 'alright', 'ok','yes'], ['direct_message','direct_mention','mention'], function(bot, message) {
 
-  bot.reply(message, chosen_message)
-    // do something here, the "is typing" animation is visible
+  bot.api.reactions.add({
+      timestamp: message.ts,
+      channel: message.channel,
+      name: 'thumbsup',
+  }, function(err, res) {
+      if (err) {
+          bot.botkit.log('Failed to add emoji reaction :(', err);
+      }
+  });
 
 });
+
+
+// Replies to negative keywords as part of our community rules!
+
+controller.hears(['anus','arse','arsehole','ass', 'ass-hat','ass-jabber','assbag','asscock', 'assclown', 'asscock','assfuck','assface','asshat','asshead', 'asshole','assshit','assshole','asssucker', 'Whore', 'motherfucker','mother fucker'], ['direct_message','direct_mention','mention'], function(bot, message) {
+
+  bot.api.reactions.add({
+      timestamp: message.ts,
+      channel: message.channel,
+      name: 'no_entry_sign',
+  }, function(err, res) {
+      if (err) {
+          bot.botkit.log('Failed to add emoji reaction :(', err);
+      }
+  });
+
+  controller.storage.users.get(message.user, function(err, user) {
+      if (user && user.name) {
+          bot.reply(message, 'Hello ' + user.name + '!!');
+      } else {
+          bot.reply(message, "These words are no allowed in here!\n Please read our *<www.example.com|community guidelines>*." );
+      }
+  });
+
+});
+
+
+// Replies to users when they feel sorry about something
+
+controller.hears(['oops','oops!','my bad','sorry', 'sorry!'], ['direct_message','direct_mention','mention'], function(bot, message) {
+
+  var message_options = [
+    "It's Okay.",
+    "It's Fine.",
+    "No Problem.",
+    "That's fine."
+]
+var random_index = Math.floor(Math.random() * message_options.length)
+var chosen_message = message_options[random_index]
+
+bot.reply(message, chosen_message)
+  // do something here, the "is typing" animation is visible
+
+});
+
 
 
 // Replies to lol, haha, funny, etc.
@@ -216,29 +261,7 @@ controller.hears(['LOL','lmao','LMAO','omg','LOL','lolz','lol.','ha','haha','HAH
 });
 
 
-// Reply random greeting messages
-
-controller.hears(['hello','hey','hi','aloha'], ['direct_message','direct_mention','mention'], function(bot, message) {
-    var message_options = [
-    	"Hello there!",
-    	"Hello.",
-      "Yes, I'm listening...",
-      "Hi! How can I help?",
-      "Hey, what's up!",
-      "Yes, tell me! What are you looking for?",
-    	"What's up?"
-	]
-	var random_index = Math.floor(Math.random() * message_options.length)
-	var chosen_message = message_options[random_index]
-
-  bot.reply(message, chosen_message)
-    // do something here, the "is typing" animation is visible
-
-});
-
-
-
-// remember and call out the user name
+// remembers and call out the user name
 
 controller.hears(['call me (.*)', 'my name is (.*)'], 'direct_message,direct_mention,mention', function(bot, message) {
     var name = message.match[1];
@@ -255,8 +278,113 @@ controller.hears(['call me (.*)', 'my name is (.*)'], 'direct_message,direct_men
     });
 });
 
+controller.hears(['what is my name', "do you know my name", "do you remember me", "do you remember my name", "what's my name", "Who am I", 'who am i'], 'direct_message,direct_mention,mention', function(bot, message) {
 
-// Reply a link with hyperlinked text
+    controller.storage.users.get(message.user, function(err, user) {
+        if (user && user.name) {
+            bot.reply(message, 'Your name is ' + user.name);
+        } else {
+            bot.startConversation(message, function(err, convo) {
+                if (!err) {
+                    convo.say('I do not know your name yet!');
+                    convo.ask('What should I call you?', function(response, convo) {
+                        convo.ask('You want me to call you `' + response.text + '`?', [
+                            {
+                                pattern: 'yes',
+                                callback: function(response, convo) {
+                                    // since no further messages are queued after this,
+                                    // the conversation will end naturally with status == 'completed'
+                                    convo.next();
+                                }
+                            },
+                            {
+                                pattern: 'no',
+                                callback: function(response, convo) {
+                                    // stop the conversation. this will cause it to end with status == 'stopped'
+                                    convo.stop();
+                                }
+                            },
+                            {
+                                default: true,
+                                callback: function(response, convo) {
+                                    convo.repeat();
+                                    convo.next();
+                                }
+                            }
+                        ]);
+
+                        convo.next();
+
+                    }, {'key': 'nickname'}); // store the results in a field called nickname
+
+                    convo.on('end', function(convo) {
+                        if (convo.status == 'completed') {
+                            bot.reply(message, 'OK! I will update my dossier...');
+
+                            controller.storage.users.get(message.user, function(err, user) {
+                                if (!user) {
+                                    user = {
+                                        id: message.user,
+                                    };
+                                }
+                                user.name = convo.extractResponse('nickname');
+                                controller.storage.users.save(user, function(err, id) {
+                                    bot.reply(message, 'Got it. I will call you ' + user.name + ' from now on.');
+                                });
+                            });
+
+
+
+                        } else {
+                            // this happens if the conversation ended prematurely for some reason
+                            bot.reply(message, 'OK, nevermind!');
+                        }
+                    });
+                }
+            });
+        }
+    });
+});
+
+
+
+// Bot - identify yourself
+/*
+controller.hears(['uptime', 'identify yourself', 'who are you', 'what is your name'],
+    'direct_message,direct_mention,mention', function(bot, message) {
+
+        var hostname = os.hostname();
+        var uptime = formatUptime(process.uptime());
+
+        bot.reply(message,
+            ':robot_face: I am a bot named <@' + bot.identity.name +
+             '>. I have been running for ' + uptime + ' on ' + hostname + '.');
+
+    });
+
+function formatUptime(uptime) {
+    var unit = 'second';
+    if (uptime > 60) {
+        uptime = uptime / 60;
+        unit = 'minute';
+    }
+    if (uptime > 60) {
+        uptime = uptime / 60;
+        unit = 'hour';
+    }
+    if (uptime != 1) {
+        unit = unit + 's';
+    }
+
+    uptime = uptime + ' ' + unit;
+    return uptime;
+}
+*/
+
+
+
+
+// Replies a link with hyperlinked text
 
 controller.hears(["community website", "our website link"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
 
@@ -322,7 +450,7 @@ controller.hears('user experience (.*)',["direct_message", "direct_mention"],fun
 });
 
 
-// Reply to users why bot doesn't understand the given text
+// replies to users why bot doesn't understand the given text
 
 
 
