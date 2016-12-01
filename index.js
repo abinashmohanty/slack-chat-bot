@@ -30,7 +30,11 @@ bot.say({
       channel: 'G38RUGE4D' // channel Id for #slack_integration
   });
 
+// Listen a keyword and mention back to the user
 
+controller.hears('are you listening to me',['direct_mention', 'mention'],function(bot, message) {
+  bot.reply(message, 'Most likely <@'+message.user+'>');
+});
 
 
 // Replies to Hello
