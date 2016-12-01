@@ -30,11 +30,35 @@ bot.say({
       channel: 'G38RUGE4D' // channel Id for #slack_integration
   });
 
+
 // Listen a keyword and mention back to the user
 
 controller.hears('are you listening to me',['direct_mention', 'mention'],function(bot, message) {
   bot.reply(message, 'Most likely <@'+message.user+'>');
 });
+
+
+// Sends image as attachment
+
+controller.hears('demo images','direct_message,direct_mention',function(bot,message) {
+  var reply_with_attachments = {
+    'username': 'My bot' ,
+    'text': 'This is how we promote',
+    'attachments': [
+      {
+        'fallback': 'As of November 2016, GSIUXD has 390+ members.',
+        'title': 'GSIUXD Featured',
+        'text': 'Click here to join in less than 30 secs',
+        'color': '#36a64f'
+      }
+    ],
+    'image_url': 'https://github.com/abinashmohanty/slack-chat-bot/blob/master/img/img-demo-gsiuxd-slack.png'
+    }
+
+  bot.reply(message, reply_with_attachments);
+});
+
+
 
 
 // Replies to Hello
@@ -153,8 +177,6 @@ bot.reply(message, "It's confidential!:blush:");
 // Let me introduce ramu kaka
 
 controller.hears(["me introduce"], [ 'direct_message','direct_mention','mention'], function (bot, message) {
-
-
 
 bot.reply(message, "Thank you :thumbsup:");
 });
