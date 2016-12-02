@@ -27,7 +27,25 @@ As of `2nd Dec 2016`, this chat bot will only work inside GSIUXD Slack Team via 
 Once you’re connected with direction message conversation with the bot `Ramu Kaka` as seen bellow, you can start interacting by sending few keywords. 
 ![Slack Direct Message](https://github.com/abinashmohanty/slack-chat-bot/blob/master/img/dm-slack-bot-ramu.png)
 
+Explore some of these keywords, or anything else.
 
+1. Type `hello`
+2. Type `hi` or `aloha`
+3. Type `ramu` or `kaka`
+4. Type `gsiuxd invite` or `slack invite`
+5. Type `what is your name` or `your name`
+6. Type `nice`, `awesome`, etc..
+7. Type `who made you`
+8. Type `are you from india`
+9. Type `who is your master` 
+10. Type `me introduce`
+11. Type `thanks`, `thank you`, etc…
+12. Type `okay`, `cool`, etc..
+13. Type some slangs :) 
+14. Type `what is my name`, `do you know my name`, `do you remember my name` 
+15. Type `community website`, `our website link`
+
+That’s all for now! Keep testing.
 
 
 
