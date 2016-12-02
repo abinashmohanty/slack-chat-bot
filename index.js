@@ -25,10 +25,15 @@ Starts Here
 
 // Bot starts a conversation before listen to any keyword
 
+/*
 bot.say({
       text: "Welcome to our test zone!",
       channel: 'G38RUGE4D' // channel Id for #slack_integration
   });
+*/
+
+// Bot shares an attachment
+
 
 
 // Listen a keyword and mention back to the user
@@ -38,28 +43,122 @@ controller.hears('are you listening to me',['direct_mention', 'mention'],functio
 });
 
 
-// Sends image as attachment
+// Send image as attachment
 
-controller.hears('demo images','direct_message,direct_mention',function(bot,message) {
+controller.hears('slack community promotion','direct_message,direct_mention',function(bot,message) {
   var reply_with_attachments = {
-    'username': 'My bot' ,
-    'text': 'This is how we promote',
+    'username': 'Ramu kaka' ,
+    'text': 'This an example of a featured image.',
     'attachments': [
       {
-        'fallback': 'As of November 2016, GSIUXD has 390+ members.',
-        'title': 'GSIUXD Featured',
-        'text': 'Click here to join in less than 30 secs',
-        'color': '#36a64f'
+        'fallback': 'Would you like to see other featured images like this?',
+        'title': 'GSIUXD Featured Image Number 04',
+        'image_url': "https://raw.githubusercontent.com/abinashmohanty/slack-chat-bot/master/img/img-demo-gsiuxd-slack-medium.png",
+        'thumb_url': "https://cdn-img.easyicon.net/png/11965/1196550.gif",
+        'text': 'You can preview or download this image at anytime.',
+        'color': 'default' // consider using optional color values "good (green)", "warning" (dark yellow), or "danger" (red). User "default" for grey.
       }
     ],
-    'image_url': 'https://github.com/abinashmohanty/slack-chat-bot/blob/master/img/img-demo-gsiuxd-slack.png'
+    'icon_url': 'http://lorempixel.com/48/48',
+    'icon_emoji': ':man_with_turban:'
     }
 
   bot.reply(message, reply_with_attachments);
 });
 
+// Interactive buttons
+
+controller.hears('interactive', 'direct_message', function(bot, message) {
+
+    bot.reply(message, {
+        attachments:[
+            {
+                title: 'Do you want to interact with my buttons?',
+                callback_id: '667',
+                attachment_type: 'default',
+                actions: [
+                    {
+                        "name":"yes",
+                        "text": "Yes",
+                        "value": "yes",
+                        "type": "button",
+                    },
+                    {
+                        "name":"no",
+                        "text": "No",
+                        "value": "no",
+                        "type": "button",
+                        "confirm": {
+                            "title": "Are you sure?",
+                            "text": "Do you really want to click no?",
+                            "ok_text": "Yes",
+                            "dismiss_text": "No"
+                        }
+                    }
+                ]
+            }
+        ]
+    });
+});
 
 
+
+
+// Send image with buttons
+
+/*
+controller.hears('attachment with buttons','direct_message,direct_mention',function(bot,message) {
+  var reply_with_attachments = {
+    'username': 'Ramu kaka' ,
+    'text': 'This an example of an image with buttons.',
+    'attachments': [
+      {
+        'fallback': 'Would you like to see another featured image?',
+        'title': 'Do you like this featured image?',
+        'image_url': "https://raw.githubusercontent.com/abinashmohanty/slack-chat-bot/master/img/img-demo-gsiuxd-slack-medium.png",
+        'thumb_url': "https://cdn-img.easyicon.net/png/11965/1196550.gif",
+        'text': 'Your feedback is important to us.',
+        'color': 'good' // consider using optional color values "good (green)", "warning" (dark yellow), or "danger" (red). User "default" for grey.
+      }
+    ],
+
+    "actions": [
+                {
+                    "name": "yes",
+                    "text": "Yes",
+                    "type": "button",
+                    "value": "yes"
+                },
+                {
+                    "name": "no",
+                    "text": "No",
+                    "type": "button",
+                    "value": "no"
+                },
+                {
+                    "name": "feedback",
+                    "text": "Give Feedback",
+                    "style": "good",
+                    "type": "button",
+                    "value": "feedback",
+                    "confirm": {
+                        "title": "Are you sure?",
+                        "text": "Is it so important for you to give feedback?",
+                        "ok_text": "Yes",
+                        "dismiss_text": "No"
+                    }
+                }
+            ],
+
+
+
+    'icon_emoji': ':man_with_turban:'
+    }
+
+  bot.reply(message, reply_with_attachments);
+});
+
+*/
 
 // Replies to Hello
 
@@ -493,23 +592,3 @@ controller.hears(".*", ["direct_message", "direct_mention"], function (bot, mess
 
     bot.reply(message, chosen_message)
 });
-
-/*
-controller.on(['direct_message','direct_mention','mention'], function(bot, message) {
-
-var message_options = [
-  "Come again...",
-  "Sorry! I din't catch that.",
-  "Sorry! I don't understand this. Could you be more specific?",
-  "Hi! How can I help?",
-  "Ah! I can only help you with specific topics such as `Slack Invite`, `GSIUXD`, or `Learn UX`",
-  "I'm not that smart enough to understand, yet!",
-  "Could you be more specific?"
-]
-var random_index = Math.floor(Math.random() * message_options.length)
-var chosen_message = message_options[random_index]
-
-bot.reply(message, chosen_message)
-
-});
-*/

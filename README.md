@@ -1,14 +1,28 @@
-## Slack Chatbot
+Ramu Kaka *Slack Bot* `Version 0.1`
 
-`Ramu Kaka` is india's first chat bot on slack to greet onboarding users. This slack bot `Ramu Kaka` can hear most of your messages, but will reply to conversations those are _specific_. I've written a brief `read me` file to include some of its basic chat parameters followed by some examples. Let's look at what are they.
+## Chat Bot for GSIUXD Slack Community
 
-### Introduction
-###### Ramu Kaka, first indi slack bot
+Hello everyone! It’s my pleasure to give you a small announcement; We’re building a chat bot to greet onboarding users especially for our GSIUXD UX Slack community. Since this community is India specific, we thought of giving this bot an interesting name, and why not! So let's call our bot `Ramu Kaka` for now. 
 
-We've designed this chat bot to greet onboarding users especially for our GSIUXD UX Slack community. Since this community is India specific, we thought of giving this bot an interesting name, and why not! So let's call our bot `Ramu Kaka` and this is how he looks 👳 right now.
 
-###### The chatbot `Ramu Kaka` has been designed specifically for our GSIUXD UX Slack community to greet onboarding users.
+## Ramu Kaka - A Slack Chat Bot
 
-I'll come back to this documentation with more details as we make changes over time. 
+`Ramu Kaka` is india's first _indi_ chat bot on slack to greet onboarding users. This slack bot `Ramu Kaka` can hear most of your messages, but will reply to conversations those are _specific_. I've written a brief `read me` file to include some of its basic chat parameters followed by some examples. Let's look at how this slack chat bot can listen and replies to your conversations. 
+
+## Limitations as of `2nd Dec 2016`
+
+This chat bot is only assigned to the GSIUXD Slack Team. Also, the bot will only work via _direct message_, _direct mention_, or _mention_ based events for now, and of course. We don't want to clutter our other channel feeds with such testings. We’ll make it global over time so that others can install this bot app into multiple slack teams. This bot will be functioning via local server. 
+
+## How to use?
+
+1. Sign in to [GSIUXD Slack Community](https://getstartedinuxdesign.slack.com/) using desktop, mobile browser, or app.
+2. If you’re new user, get an [invite to join](https://gsiuxd.herokuapp.com/). 
+3. Once signed in, chat with our chat bot `Ramu Kaka` by using `@ramukaka` by opening a direction message via slack. When you click on the direction messages, you will see a screen like this. Just type out `ramukaka` and the bot will appear upfront. 
+
+![Slack Direct Message](https://github.com/abinashmohanty/slack-chat-bot/blob/master/img/ramu-kaka.png)
+  
+
+### Testing this chat bot
+
 
 
