@@ -9,9 +9,9 @@ Hello everyone! It’s my pleasure to give you a small announcement; We’re bui
 
 `Ramu Kaka` is india's first _indi_ chat bot on slack to greet onboarding users. This slack bot `Ramu Kaka` can hear most of your messages, but will reply to conversations those are _specific_. I've written a brief `read me` file to include some of its basic chat parameters followed by some examples. Let's look at how this slack chat bot can listen and replies to your conversations. 
 
-## Limitations as of `2nd Dec 2016`
+## Limitations
 
-This chat bot is only assigned to the GSIUXD Slack Team. Also, the bot will only work via _direct message_, _direct mention_, or _mention_ based events for now, and of course. We don't want to clutter our other channel feeds with such testings. We’ll make it global over time so that others can install this bot app into multiple slack teams. This bot will be functioning via local server. 
+As of `2nd Dec 2016`, this chat bot will only work inside GSIUXD Slack Team via _direct message_, _direct mention_, or _mention_ based events for now, and of course. We don't want to clutter our other channel feeds with such testings. We’ll make it global over time so that others can install this bot app into multiple slack teams. This bot will be functioning via local server. 
 
 ## How to use?
 
@@ -23,6 +23,13 @@ This chat bot is only assigned to the GSIUXD Slack Team. Also, the bot will only
   
 
 ### Testing this chat bot
+
+Once you’re connected with direction message conversation with the bot `Ramu Kaka` as seen bellow, you can start interacting by sending few keywords. 
+![Slack Direct Message](https://github.com/abinashmohanty/slack-chat-bot/blob/master/img/dm-slack-bot-ramu.png)
+
+
+
+
 
 
 
