@@ -25,6 +25,8 @@ As of `2nd Dec 2016`, this chat bot will only work inside GSIUXD Slack Team via 
 ### Testing this chat bot
 
 Once you’re connected with direction message conversation with the bot `Ramu Kaka` as seen bellow, you can start interacting by sending few keywords. 
+
+
 ![Slack Direct Message](https://github.com/abinashmohanty/slack-chat-bot/blob/master/img/dm-slack-bot-ramu.png)
 
 Explore some of these keywords, or anything else.
